@@ -1,4 +1,5 @@
-# Created by https://www.gitignore.io/api/node,intellij,visualstudiocode
+
+# Created by https://www.gitignore.io/api/node,intellij,visualstudiocode
 
 ### Intellij ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
@@ -86,6 +87,7 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+public/bundle.js
 
 # Runtime data
 pids
