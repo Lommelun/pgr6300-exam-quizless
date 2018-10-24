@@ -1,0 +1,42 @@
+{
+  "name": "mock-exam-pg6300",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:client": "webpack-dev-server --mode development --content-base public/",
+    "build:client": "webpack --mode production",
+    "build:server": "",
+    "start:server": "node src/server/server.js"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.4",
+    "http-errors": "~1.7.1",
+    "lodash": "^4.17.11",
+    "morgan": "~1.9.1",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-redux": "^5.0.7",
+    "react-router-dom": "^4.3.1",
+    "redux": "^4.0.1",
+    "redux-observable": "^1.0.0",
+    "rxjs": "^6.3.3",
+    "socket.io": "^2.1.1",
+    "socket.io-client": "^2.1.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "babel-jest": "^23.6.0",
+    "babel-loader": "^8.0.4",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "eslint": "^5.7.0",
+    "jest": "^23.6.0",
+    "webpack": "^4.21.0",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.9"
+  }
+}
