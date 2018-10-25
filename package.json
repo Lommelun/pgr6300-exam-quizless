@@ -11,6 +11,8 @@
     "start": "node src/server/static.js"
   },
   "dependencies": {
+    "@material-ui/core": "^3.3.1",
+    "@material-ui/icons": "^3.0.1",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.4",
     "express": "^4.16.4",
