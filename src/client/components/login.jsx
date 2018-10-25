@@ -1,27 +1,48 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
-export default class login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props)
-    this.onSubmit = this.onSubmit.bind(this);
+
+    this.state = {
+      username: "",
+      password: ""
+    }
+
+    this.onChange = this.onChange.bind(this)
+    this.onSubmit = this.onSubmit.bind(this)
+  }
+
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value })
   }
 
   onSubmit(e) {
     e.preventDefault();
-    // TODO
   }
 
-  render() {   
+  render() {
     return (
       <div>
-        <form>
-          <label name="Username" />
-          <input type="text" value={} name="username-input" placeholder="Username" />
-          <label name="Password" />
-          <input type="password" value={} name="password-input" placeholder="Password" />
-          <button type="submit" onSubmit={this.onSubmit} />
+        <form onSubmit={this.onSubmit}>
+          <label>
+            Username:
+            <input type="text" name="username" value={this.state.username} onChange={this.onChange} />
+          </label>
+          <label>
+            Password:
+            <input type="password" name="password" value={this.state.password} onChange={this.onChange} />
+          </label>
+          <input type="submit" value="Submit" />
         </form>
+        <Link to="/register">Register</Link>
       </div>
     )
   }
 }
+
+const LoginComponent = connect()(Login)
+
+export default LoginComponent
