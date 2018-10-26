@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npm-run-all --parallel watch:build watch:server",
     "build": "webpack --mode production",
-    "watch:build": "webpack --watch --mode production",
+    "watch:build": "webpack-dev-server --mode development",
     "watch:server": "nodemon src/server/static.js",
     "start": "node src/server/static.js"
   },
