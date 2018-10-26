@@ -5,8 +5,7 @@ import rootReducer from '../reducers/root'
 const epicMiddleware = createEpicMiddleware()
 
 const middlewares = [
-  epicMiddleware,
-  window.__REDUX_DEVTOOLS_EXTENSION__
+  epicMiddleware
 ]
 
 export default () => {

@@ -60,7 +60,7 @@ class Login extends Component {
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton onClick={this.togglePasswordVisibility} >
-                    {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+                    {this.state.passwordVisible ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>
               } />
