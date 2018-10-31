@@ -13,6 +13,6 @@ app.use("/", (req, res) => {
   res.sendFile(path.resolve(__dirname + '/../../public/index.html'))
 })
 
-app.use('/api', require('./router'))
+app.use('/api', require('./api/router'))
 
-app.listen(port, () => { console.log("Static server: start") })
+app.listen(port, () => { console.log("Node server: start") })

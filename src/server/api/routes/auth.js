@@ -2,7 +2,7 @@ const router = require('express').Router()
 const passport = require('passport')
 const bcrypt = require('bcrypt')
 const LocalStrategy = require('passport-local').Strategy
-const userRepository = require('../db/userRepository')
+const userRepository = require('../../db/userRepository')
 
 passport.use(new LocalStrategy(
   {
@@ -15,7 +15,7 @@ passport.use(new LocalStrategy(
   }
 ))
 
-router.post('/api/authenticate', (req, res) => {
+router.post('/authenticate', (req, res) => {
   if (username == undefined || password == undefined) {
     res.status(400).send()
     return

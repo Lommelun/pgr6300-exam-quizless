@@ -1,6 +1,5 @@
 const router = require('express').Router()
-const repository = require('../db/userRepository')
-
+const repository = require('../../db/userRepository')
 
 router.post('/api/register', (req, res) => {
   const username = req.body.username
