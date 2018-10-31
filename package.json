@@ -9,8 +9,8 @@
     "prod:build": "webpack --mode production",
     "dev:build": "webpack --mode development",
     "watch:build": "webpack --watch --mode development",
-    "watch:server": "nodemon src/server/static.js",
-    "start": "node src/server/static.js"
+    "watch:server": "nodemon src/server/app.js",
+    "start": "node src/server/app.js"
   },
   "dependencies": {
     "@material-ui/core": "^3.3.1",
