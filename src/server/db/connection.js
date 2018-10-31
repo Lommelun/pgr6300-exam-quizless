@@ -1,18 +1,14 @@
-const { Pool } = require('pg')
+const pg = require('pg-rxjs')
 
-module.exports = async () => {
-  const pool = new Pool({
-    user: "postgres",
-    host: "db",
-    database: "postgres",
-    password: "h723aHdsa73",
-    port: 5432
-  })
+const connector = async () => {
+  const pool = new pg.Pool('postgres://postgres:h723aHdsa73@db:5432/postgres')
 
   const initialize = require('./initializer')(pool)
-
-  await pool.connect()
-  await initialize.tables()
+  await initialize.tables().subscribe();
 
   return pool
 }
+
+connector()
+
+module.exports = connector

@@ -6,7 +6,7 @@ services:
     restart: always
     environment:
       POSTGRES_PASSWORD: h723aHdsa73
-    networks: 
+    networks:
       - dbnet
   node:
     image: nodeapp:latest

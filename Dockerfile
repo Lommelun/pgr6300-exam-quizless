@@ -1,4 +1,4 @@
-FROM node:10-alpine
+FROM node:10
 
 RUN mkdir -p /var/node-app
 COPY ./package.json /var/node-app
