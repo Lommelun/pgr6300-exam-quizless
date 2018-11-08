@@ -2,10 +2,16 @@ version: '3.1'
 
 services:
   db:
-    image: postgres
+    image: mongo:4.1-xenial
     restart: always
+    volumes:
+      - ./scripts/:/docker-entrypoint-initdb.d/
     environment:
-      POSTGRES_PASSWORD: h723aHdsa73
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: H61ehsaFDsu4
+      MONGO_INITDB_DATABASE: quizzless
+      MONGO_USER_USERNAME: quizmaster
+      MONGO_USER_PASSWORD: asdH2djaSDah3
     networks:
       - dbnet
   node:

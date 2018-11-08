@@ -1,37 +1,27 @@
-const db = require('./connection')
+const mongoose = require('./connection')
+const uniqueValidator = require('mongoose-unique-validator')
+const Schema = require('mongoose').Schema
 const bcrypt = require('bcrypt')
 
-const create = async (username, password) => {
+const userSchema = new Schema({
+  username: { type: String, required: true, index: true, unique: true },
+  password: { type: String, required: true }
+})
+
+userSchema.plugin(uniqueValidator)
+userSchema.pre('save', next => {
+  const user = this
   const saltRounds = 12
 
-  // TODO: Validate username, sanitize?
-  return bcrypt.hash(password, saltRounds)
-    .then(password_hash => db.query(
-      {
-        text: 'INSERT INTO users(id, name, password_hash) VALUES($1, $2, $3)',
-        values: ['DEFAULT', username, password_hash]
-      })
-    )
-}
+  if (!user.isModified('password')) return next()
 
-const getByName = (username) => {
-  return db.query(
-    {
-      text: 'SELECT * FROM users WHERE username = $1',
-      values: [username]
-    })
-}
+  bcrypt.hash(user.password, saltRounds).then(password_hash => {
+    if (err) return next(err)
+    user.password = password_hash
+    next()
+  })
+})
 
-const getById = (id) => {
-  return db.query(
-    {
-      text: 'SELECT * FROM users WHERE id = $1',
-      values: [id]
-    })
-}
+const UserModel = mongoose.model('User', userSchema)
 
-module.exports = {
-  create,
-  getByName,
-  getById
-}
+module.exports = UserModel

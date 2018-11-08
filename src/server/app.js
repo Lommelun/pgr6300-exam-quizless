@@ -1,9 +1,12 @@
 const express = require('express')
 const logger = require('morgan')
+const dbInitializer = require('./db/initializer')
 const path = require('path')
 const app = express()
 
 const port = 8080;
+
+dbInitializer.initialize()
 
 app.use(logger('dev'))
 app.use(express.json())
