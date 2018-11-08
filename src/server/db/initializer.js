@@ -5,8 +5,8 @@ const quizzes = [
     name: "sports",
     questions: [
       {
-        "question": "What colour jersey is worn by the winners of each stage of the Tour De France?",
-        "answers": ["Blue", "Spotted white & red", "Green", "Yellow"],
+        question: "What colour jersey is worn by the winners of each stage of the Tour De France?",
+        answers: ["Blue", "Spotted white & red", "Green", "Yellow"],
         "correctAnswer": "Yellow"
       },
       {
@@ -62,7 +62,7 @@ const quizzes = [
       {
         "question": "What is the painting 'La Gioconda' more usually known as?",
         "answers": ["The Starry Night", "Mona Lisa", "The Scream", "The Girl With A Pearl Earring"],
-        "correctAnswer": ""
+        correctAnswer: "Mona Lisa"
       },
       {
         "question": "What does the term 'piano' mean?",
@@ -98,12 +98,12 @@ const quizzes = [
   })
 ]
 
+
+
 module.exports.initialize = async () => {
   quizzes.forEach(quiz => {
     quiz.save(err => {
       if (err) console.table(err)
     })
   });
-  const test = 
-  console.table()
 }
