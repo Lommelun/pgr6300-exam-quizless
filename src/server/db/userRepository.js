@@ -9,17 +9,18 @@ const userSchema = new Schema({
 })
 
 userSchema.plugin(uniqueValidator)
-userSchema.pre('save', next => {
+userSchema.pre('save', function (next) {
   const user = this
   const saltRounds = 12
 
   if (!user.isModified('password')) return next()
 
-  bcrypt.hash(user.password, saltRounds).then(password_hash => {
-    if (err) return next(err)
-    user.password = password_hash
-    next()
-  })
+  bcrypt.hash(user.password, saltRounds)
+    .then(password_hash => {
+      user.password = password_hash
+      next()
+    })
+    .catch(err => next(err))
 })
 
 const UserModel = mongoose.model('User', userSchema)
