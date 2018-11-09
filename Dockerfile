@@ -5,6 +5,6 @@ COPY ./package.json /var/node-app
 
 WORKDIR /var/node-app
 
-RUN npm i
+RUN npm i -s
 
 CMD node src/server/app.js

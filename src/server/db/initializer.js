@@ -1,4 +1,5 @@
 const Quiz = require('./quizRepository')
+const User = require('./userRepository')
 
 const quizzes = [
   new Quiz({
@@ -98,7 +99,7 @@ const quizzes = [
   })
 ]
 
-
+const user = new User({ username: 'even_1', password: 'password' }).save()
 
 module.exports.initialize = async () => {
   quizzes.forEach(quiz => {
