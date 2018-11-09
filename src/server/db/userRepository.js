@@ -23,6 +23,14 @@ userSchema.pre('save', function (next) {
     .catch(err => next(err))
 })
 
-const UserModel = mongoose.model('User', userSchema)
+const User = mongoose.model('User', userSchema)
 
-module.exports = UserModel
+const verify = async (username, password) => {
+  const user = await User.findOne({ username: username }, 'password').exec()
+  return await bcrypt.compare(password, user.password)
+}
+
+module.exports = {
+  User,
+  verify
+}

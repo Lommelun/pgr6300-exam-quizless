@@ -1,17 +1,28 @@
 const express = require('express')
+const session = require('express-session')
+const bodyParser = require('body-parser')
 const logger = require('morgan')
-const dbInitializer = require('./db/initializer')
 const path = require('path')
-const app = express()
 
-const port = 8080;
+const dbInitializer = require('./db/initializer')
+const env = require('../../env')
+
+const app = express()
+const port = 8080
 
 dbInitializer.initialize()
 
 app.use(logger('dev'))
-app.use(express.json())
-
 app.use(express.static('public/'))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(session({
+  secret: env.SESSION_SECRET,
+  saveUninitialized: false,
+  resave: false
+}))
+
+
 app.use("/", (req, res) => {
   res.sendFile(path.resolve(__dirname + '/../../public/index.html'))
 })

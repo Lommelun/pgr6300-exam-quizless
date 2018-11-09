@@ -2,7 +2,8 @@ const router = require('express').Router()
 const passport = require('passport')
 const bcrypt = require('bcrypt')
 const LocalStrategy = require('passport-local').Strategy
-const userRepository = require('../../db/userRepository')
+const User = require('../../db/userRepository').User
+const verify = require('../../db/userRepository').verify
 
 passport.use(new LocalStrategy(
   {
@@ -10,10 +11,27 @@ passport.use(new LocalStrategy(
     passwordField: 'password'
   },
   async (username, password, done) => {
-    // TODO: implement password check
-    done(null, {})
+    const verified = await verify(username, password)
+
+    if (!verified) {
+      return done(null, false, { message: 'Invalid username/password' })
+    }
+
+    return done(null, await User.findOne({ username: username }))
   }
 ))
+
+passport.serializeUser((user, done) => {
+  done(null, user._id)
+})
+
+passport.deserializeUser((id, done) => {
+  const user = User.findOne({ _id: id })
+  return (user) ? done(null, user) : done(null, false)
+})
+
+router.use(passport.initialize())
+router.use(passport.session())
 
 router.post('/authenticate', (req, res) => {
   if (username == undefined || password == undefined) {
