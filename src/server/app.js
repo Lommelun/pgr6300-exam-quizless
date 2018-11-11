@@ -4,6 +4,8 @@ const bodyParser = require('body-parser')
 const logger = require('morgan')
 const path = require('path')
 
+const api = require('./api/router')
+
 const dbInitializer = require('./db/initializer')
 const env = require('../../env')
 
@@ -23,10 +25,11 @@ app.use(session({
 }))
 
 
-app.use("/", (req, res) => {
+app.get("/", (req, res) => {
   res.sendFile(path.resolve(__dirname + '/../../public/index.html'))
 })
 
-app.use('/api', require('./api/router'))
+
+app.use('/api', api)
 
 app.listen(port, () => { console.log("Node server: start") })

@@ -33,6 +33,15 @@ passport.deserializeUser((id, done) => {
 router.use(passport.initialize())
 router.use(passport.session())
 
+router.all('/', (req, res) => {
+  res.status(400).send(JSON.stringify({
+    error: "Bad request: You probably want to use one of the endpoints, see the list 'entrypoints'",
+    endpoints: [
+      '/authenticate?username={username}&password={password}',
+    ]
+  }))
+})
+
 router.post('/authenticate', (req, res) => {
   if (username == undefined || password == undefined) {
     res.status(400).send()
