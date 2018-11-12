@@ -1,6 +1,5 @@
 const router = require('express').Router()
 const passport = require('passport')
-const bcrypt = require('bcrypt')
 const LocalStrategy = require('passport-local').Strategy
 const User = require('../../db/userRepository').User
 const verify = require('../../db/userRepository').verify
@@ -30,9 +29,6 @@ passport.deserializeUser((id, done) => {
   return (user) ? done(null, user) : done(null, false)
 })
 
-router.use(passport.initialize())
-router.use(passport.session())
-
 router.all('/', (req, res) => {
   res.status(400).send(JSON.stringify({
     error: "Bad request: You probably want to use one of the endpoints, see the list 'entrypoints'",
@@ -42,15 +38,13 @@ router.all('/', (req, res) => {
   }))
 })
 
-router.post('/authenticate', (req, res) => {
-  if (username == undefined || password == undefined) {
-    res.status(400).send()
-    return
-  }
-
-  userRepository.get(req.body.username)
-    .then(res.status(200).send())
-    .catch(res.status(400).send())
+router.post('/authenticate', passport.authenticate('local'), (req, res) => {
+  res.status(204).send()
 })
+
+router.post('/logout', (req, res) => {
+  req.logout()
+  res.status(204).send()
+});
 
 module.exports = router
