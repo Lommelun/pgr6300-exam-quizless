@@ -1,5 +1,6 @@
 const express = require('express')
 const session = require('express-session')
+const passport = require('passport')
 const bodyParser = require('body-parser')
 const logger = require('morgan')
 const path = require('path')
@@ -23,6 +24,8 @@ app.use(session({
   saveUninitialized: false,
   resave: false
 }))
+app.use(passport.initialize())
+app.use(passport.session())
 
 
 app.get("/", (req, res) => {
