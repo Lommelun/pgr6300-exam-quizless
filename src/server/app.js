@@ -1,38 +1,34 @@
 const express = require('express')
 const session = require('express-session')
-const passport = require('passport')
 const bodyParser = require('body-parser')
+const passport = require('passport')
 const logger = require('morgan')
+const env = require('dotenv').configure()
 const path = require('path')
 
-const api = require('./api/router')
-
 const dbInitializer = require('./db/initializer')
-const env = require('../../env')
 
 const app = express()
-const port = 8080
 
 dbInitializer.initialize()
 
-app.use(logger('dev'))
-app.use(express.static('public/'))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(session({
-  secret: env.SESSION_SECRET,
+const session = session({
+  secret: process.env.SESSION_SECRET,
   saveUninitialized: false,
   resave: false
-}))
-app.use(passport.initialize())
-app.use(passport.session())
+})
 
+app.use([
+  logger('dev'),
+  express.static('public/'), session,
+  bodyParser.json(), bodyParser.urlencoded({ extended: true }),
+  passport.initialize(), passport.session()
+])
 
 app.get("/", (req, res) => {
   res.sendFile(path.resolve(__dirname + '/../../public/index.html'))
 })
 
+app.use('/api', require('./api/router'))
 
-app.use('/api', api)
-
-app.listen(port, () => { console.log("Node server: start") })
+module.exports = { session, app }
