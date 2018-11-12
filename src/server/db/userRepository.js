@@ -27,6 +27,7 @@ const User = mongoose.model('User', userSchema)
 
 const verify = async (username, password) => {
   const user = await User.findOne({ username: username }, 'password').exec()
+  if (!user) return false
   return await bcrypt.compare(password, user.password)
 }
 
