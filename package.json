@@ -9,10 +9,10 @@
     "dev:build-client": "webpack --mode development",
     "dev:build-server": "npm run build-server",
     "watch:build-client": "webpack --watch --mode development",
-    "watch:build-server": "nodemon src/server/app.js",
+    "watch:build-server": "nodemon src/server/server.js",
     "build-client": "webpack --mode production",
     "build-server": "babel src/server --out-dir dist --copy-files",
-    "start": "node src/server/app.js"
+    "start": "node src/server/server.js"
   },
   "dependencies": {
     "@material-ui/core": "^3.3.1",

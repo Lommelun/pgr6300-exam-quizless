@@ -3,7 +3,7 @@ const session = require('express-session')
 const bodyParser = require('body-parser')
 const passport = require('passport')
 const logger = require('morgan')
-const env = require('dotenv').configure()
+const env = require('dotenv').config()
 const path = require('path')
 
 const dbInitializer = require('./db/initializer')
@@ -12,7 +12,7 @@ const app = express()
 
 dbInitializer.initialize()
 
-const session = session({
+const sessionMiddleware = session({
   secret: process.env.SESSION_SECRET,
   saveUninitialized: false,
   resave: false
@@ -20,7 +20,7 @@ const session = session({
 
 app.use([
   logger('dev'),
-  express.static('public/'), session,
+  express.static('public/'), sessionMiddleware,
   bodyParser.json(), bodyParser.urlencoded({ extended: true }),
   passport.initialize(), passport.session()
 ])
@@ -31,4 +31,4 @@ app.get("/", (req, res) => {
 
 app.use('/api', require('./api/router'))
 
-module.exports = { session, app }
+module.exports = { sessionMiddleware, app }

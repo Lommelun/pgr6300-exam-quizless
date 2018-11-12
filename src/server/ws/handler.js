@@ -13,3 +13,5 @@ const start = (server) => {
     })
   })
 }
+
+module.exports = start
