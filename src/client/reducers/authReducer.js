@@ -1,8 +1,23 @@
-import { AUTHENTICATE_USER } from '../redux/actionTypes'
+import { userConsts } from '../actions/action.types'
 
-export default (state = [], action) => {
+const initialState = JSON.parse(localStorage.getItem('user')) ? { loggedIn: true, user: user } : {}
+
+export default (state = initialState, action) => {
   switch (action.type) {
-    case AUTHENTICATE_USER: return state;
-    default: return state;
+    case userConsts.LOGIN_REQUEST:
+      return {
+        loggingIn: true,
+        user: { username: action.username }
+      }
+    case userConsts.LOGIN_SUCCESS:
+      return {
+        loggedIn: true,
+        user: action.user
+      }
+    case userConsts.LOGIN_FAILURE: return {}
+    case userConsts.LOGOUT_REQUEST: return {}
+    case userConsts.LOGOUT_SUCCESS: return {}
+    case userConsts.LOGOUT_FAILURE: return {}
+    default: return state
   }
 }

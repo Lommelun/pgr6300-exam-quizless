@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
@@ -11,6 +10,7 @@ import FormControl from '@material-ui/core/FormControl'
 import IconButton from '@material-ui/core/IconButton'
 import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
+import userCreators from '../actions/user.creators';
 
 class Login extends Component {
   constructor(props) {
@@ -19,11 +19,13 @@ class Login extends Component {
     this.state = {
       username: "",
       password: "",
-      passwordVisible: false
+      passwordVisible: false,
+      errorMessage: null
     }
 
     this.onChange = this.onChange.bind(this)
-    this.onClick = this.onClick.bind(this)
+    this.onClickRegister = this.onClickRegister.bind(this)
+    this.onClickLogin = this.onClickLogin.bind(this)
     this.togglePasswordVisibility = this.togglePasswordVisibility.bind(this)
   }
 
@@ -31,12 +33,16 @@ class Login extends Component {
     this.setState({ [e.target.name]: e.target.value })
   }
 
-  onClick(e) {
-    e.preventDefault();
+  onClickLogin(_e) {
+    userCreators.login(this.state.username, this.state.password)
   }
 
-  togglePasswordVisibility(e) {
-    this.setState(state => ({ passwordVisible: !this.state.passwordVisible }))
+  onClickRegister(_e) {
+    userCreators.register(this.state.username, this.state.password)
+  }
+
+  togglePasswordVisibility(_e) {
+    this.setState(state => ({ passwordVisible: !state.passwordVisible }))
   }
 
   render() {
@@ -65,9 +71,9 @@ class Login extends Component {
                 </InputAdornment>
               } />
           </FormControl>
-          <Button color="primary" onClick={this.onClick}>Submit</Button>
+          <Button color="primary" onClick={this.onClickLogin}>Login</Button>
+          <Button color="secondary" onClick={this.onClickRegister}>Register</Button>
         </form>
-        <Link to="/register"><Button color="secondary">Register</Button></Link>
       </div>
     )
   }

@@ -15,7 +15,7 @@ router.post('/', (req, res) => {
       req.session.save(() => {
         if (err) return next(err)
 
-        res.status(204).send()
+        res.status(204).send(JSON.stringify(user))
       })
     })
   })
