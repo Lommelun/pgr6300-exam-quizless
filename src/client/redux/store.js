@@ -1,11 +1,12 @@
 import { createStore, applyMiddleware } from 'redux'
-import { createEpicMiddleware, combineEpics } from 'redux-observable';
+import ReduxThunk from 'redux-thunk'
 import rootReducer from '../reducers/root'
+import { emit } from '../websocket/connection'
 
 const epicMiddleware = createEpicMiddleware()
 
 const middlewares = [
-  epicMiddleware
+  ReduxThunk.withExtraArgument(emit)
 ]
 
 export default () => {
