@@ -2,11 +2,11 @@ import { createStore, applyMiddleware } from 'redux'
 import ReduxThunk from 'redux-thunk'
 import rootReducer from '../reducers/root'
 import { emit } from '../websocket/connection'
+import logger from 'redux-logger'
 
 const middlewares = [
-  ReduxThunk.withExtraArgument(emit)
+  ReduxThunk.withExtraArgument(emit),
+  logger
 ]
 
-export default () => {
-  return createStore(rootReducer, {}, applyMiddleware(...middlewares))
-}
+export default createStore(rootReducer, {}, applyMiddleware(...middlewares))
