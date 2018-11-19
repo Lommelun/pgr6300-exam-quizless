@@ -47,9 +47,14 @@ class Login extends Component {
     this.setState(state => ({ passwordVisible: !state.passwordVisible }))
   }
 
+  componentDidUpdate() {
+    if (this.props.loggedIn) {
+      this.props.history.push('/')
+    }
+  }
+
   componentDidMount() {
     if (this.props.loggedIn) {
-      console.log('Already logged in.')
       this.props.history.push('/')
     }
   }
@@ -90,7 +95,7 @@ class Login extends Component {
 
 const mapStateToProps = (state = []) => {
   return {
-    loggedIn: state.loggedIn
+    loggedIn: state.auth ? state.auth.loggedIn : false
   }
 }
 
