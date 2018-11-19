@@ -36,11 +36,11 @@ class Login extends Component {
   }
 
   onClickLogin(_e) {
-    this.props.userCreators.login(this.state.username, this.state.password)
+    this.props.login(this.state.username, this.state.password)
   }
 
   onClickRegister(_e) {
-    this.props.userCreators.register(this.state.username, this.state.password)
+    this.props.register(this.state.username, this.state.password)
   }
 
   togglePasswordVisibility(_e) {
@@ -101,6 +101,4 @@ const mapDispatchToProps = dispatch => {
   }, dispatch)
 }
 
-const LoginComponent = withRouter(connect(mapStateToProps, mapDispatchToProps)(Login))
-
-export default LoginComponent
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login))

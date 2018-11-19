@@ -19,32 +19,40 @@ function login(username, password) {
 }
 
 function logout() {
-  dispatch(() => { return { type: userConsts.LOGOUT_REQUEST } })
+  return dispatch => {
+    dispatch(() => { return { type: userConsts.LOGOUT_REQUEST } })
 
-  fetch('/api/register/', { method: 'POST' })
-    .then(res => {
-      dispatch(() => { return { type: userConsts.LOGOUT_SUCCESS } })
-    })
-    .catch(err => {
-      dispatch(() => { return { type: userConsts.LOGOUT_FAILURE } })
-    })
+    fetch('/api/register/', { method: 'POST' })
+      .then(res => {
+        dispatch(() => { return { type: userConsts.LOGOUT_SUCCESS } })
+      })
+      .catch(err => {
+        dispatch(() => { return { type: userConsts.LOGOUT_FAILURE } })
+      })
+  }
 }
 
 function register(username, password) {
-  dispatch(() => {
-    return {
-      type: userConsts.REGISTER_REQUEST, user: { username: username, password: password }
-    }
-  })
+  return dispatch => {
+    dispatch(() => {
+      return {
+        type: userConsts.REGISTER_REQUEST, user: { username: username, password: password }
+      }
+    })
 
-  fetch('/api/auth/logout/', { method: 'POST' })
-    .then(JSON.parse)
-    .then(user => {
-      dispatch(() => { return { type: userConsts.REGISTER_SUCCESS, user } })
+    fetch('/api/register/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: username, password: password })
     })
-    .catch(err => {
-      dispatch(() => { return { type: userConsts.REGISTER_FAILURE, err } })
-    })
+      .then(JSON.parse)
+      .then(user => {
+        dispatch(() => { return { type: userConsts.REGISTER_SUCCESS, user } })
+      })
+      .catch(err => {
+        dispatch(() => { return { type: userConsts.REGISTER_FAILURE, err } })
+      })
+  }
 }
 
 const userActions = {
