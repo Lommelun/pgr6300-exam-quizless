@@ -5,6 +5,7 @@ const passport = require('passport')
 const logger = require('morgan')
 const env = require('dotenv').config()
 const path = require('path')
+const cors = require('cors')
 
 const dbInitializer = require('./db/initializer')
 
@@ -19,7 +20,7 @@ const sessionMiddleware = session({
 })
 
 app.use([
-  logger('dev'),
+  logger('dev'), cors(),
   express.static('public/'), sessionMiddleware,
   bodyParser.json(), bodyParser.urlencoded({ extended: true }),
   passport.initialize(), passport.session()
