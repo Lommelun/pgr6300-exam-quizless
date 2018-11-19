@@ -2,19 +2,27 @@ import { userConsts } from './action.types'
 
 function login(username, password) {
   return dispatch => {
-    dispatch(() => { return { type: userConsts.LOGIN_REQUEST, username } });
+    dispatch(() => {
+      return { type: userConsts.LOGIN_REQUEST, payload: { username } }
+    });
 
     fetch('/api/auth/authenticate/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: username, password: password })
-    }).then(JSON.parse)
-      .then(user => {
-        dispatch(() => { return { type: userConsts.LOGIN_SUCCESS, user } })
-      })
-      .catch(error => {
-        dispatch(() => { return { type: userConsts.LOGIN_FAILURE, error } })
-      })
+    }).then(res => {
+      if (res.status === 204) {
+        return fetch(`/api/auth/users/${username}`)
+      }
+
+      return Promise.reject('Expected status code 204, could not fetch user')
+    }).then(res => res.json())
+      .then(user => dispatch(() => {
+        return { type: userConsts.LOGIN_SUCCESS, payload: user }
+      }))
+      .catch(err => dispatch(() => {
+        return { type: userConsts.LOGIN_FAILURE, payload: { err } }
+      }))
   }
 }
 

@@ -3,4 +3,4 @@ import auth from './authReducer'
 import room from './registerReducer'
 import user from './roomReducer'
 
-export default () => { combineReducers(auth, room, user) }
+export default combineReducers({ auth, room, user })

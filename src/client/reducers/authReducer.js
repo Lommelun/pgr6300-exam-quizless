@@ -1,18 +1,16 @@
 import { userConsts } from '../actions/action.types'
 
-const initialState = JSON.parse(localStorage.getItem('user')) ? { loggedIn: true, user: user } : {}
-
-export default (state = initialState, action) => {
+export default (state = {}, action) => {
   switch (action.type) {
     case userConsts.LOGIN_REQUEST:
       return {
         loggingIn: true,
-        user: { username: action.username }
+        user: { username: action.payload.username }
       }
     case userConsts.LOGIN_SUCCESS:
       return {
         loggedIn: true,
-        user: action.user
+        user: { username: action.payload.username, id: action.payload.id }
       }
     case userConsts.LOGIN_FAILURE: return {}
     case userConsts.LOGOUT_REQUEST: return {}
