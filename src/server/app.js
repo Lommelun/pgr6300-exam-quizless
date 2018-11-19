@@ -26,9 +26,9 @@ app.use([
   passport.initialize(), passport.session()
 ])
 
-app.get("/*", (req, res) => {
-  res.sendFile(path.resolve(__dirname + '/../../public/index.html'))
-})
+app.use((req, res, next) => {
+  res.sendFile(path.resolve(__dirname, '../../public/index.html'));
+});
 
 app.use('/api', require('./api/router'))
 
