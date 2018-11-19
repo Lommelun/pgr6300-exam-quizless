@@ -47,8 +47,10 @@ function register(username, password) {
     })
 }
 
-export default userActions = {
+const userActions = {
   login,
   logout,
   register
 }
+
+export default userActions

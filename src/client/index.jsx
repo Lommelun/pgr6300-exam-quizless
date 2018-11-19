@@ -1,12 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import store from './redux/store'
+import storeInit from './redux/store'
 import { init } from './websocket/connection'
 
-import App from './app'
+import { App } from './app'
 
-const store = store()
+const store = storeInit()
 init(store)
 
 ReactDOM.render(

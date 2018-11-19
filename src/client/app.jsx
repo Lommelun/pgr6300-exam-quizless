@@ -1,15 +1,14 @@
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Login from './components/login'
+import Home from './components/home'
 
-export default App = () => {
+export const App = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path="/" component={() => (<div><h1>Home</h1></div>)} />
+        <Route exact path="/" component={Home} />
         <Route exact path="/login" component={Login} />
-        <Route exact path="/register" />
-        <Route exact path="/3" />
         <Route component={() => (<div><h1>404: not found</h1></div>)} />
       </Switch>
     </BrowserRouter>

@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import userCreators from '../actions/user.creators'
 
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
@@ -10,7 +13,6 @@ import FormControl from '@material-ui/core/FormControl'
 import IconButton from '@material-ui/core/IconButton'
 import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
-import userCreators from '../actions/user.creators';
 
 class Login extends Component {
   constructor(props) {
@@ -34,15 +36,22 @@ class Login extends Component {
   }
 
   onClickLogin(_e) {
-    userCreators.login(this.state.username, this.state.password)
+    this.props.userCreators.login(this.state.username, this.state.password)
   }
 
   onClickRegister(_e) {
-    userCreators.register(this.state.username, this.state.password)
+    this.props.userCreators.register(this.state.username, this.state.password)
   }
 
   togglePasswordVisibility(_e) {
     this.setState(state => ({ passwordVisible: !state.passwordVisible }))
+  }
+
+  componentDidMount() {
+    if (this.props.loggedIn) {
+      console.log('Already logged in.')
+      this.props.history.push('/')
+    }
   }
 
   render() {
@@ -79,6 +88,19 @@ class Login extends Component {
   }
 }
 
-const LoginComponent = connect()(Login)
+const mapStateToProps = (state = []) => {
+  return {
+    loggedIn: state.loggedIn
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({
+    login: userCreators.login,
+    register: userCreators.register
+  }, dispatch)
+}
+
+const LoginComponent = withRouter(connect(mapStateToProps, mapDispatchToProps)(Login))
 
 export default LoginComponent
