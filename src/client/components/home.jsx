@@ -1,34 +1,14 @@
-import React from "react";
+import React, { Component } from "react";
 
-export default class Home extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
+export default class Home extends Component {
   render() {
     return (
       <div>
-        <div>
-          <h2>Connect Four Game</h2>
+        <h2>Quizzless: the quiz with more!</h2>
 
-          <p>
-            Welcome to the Connect Four Game! In this game, you alternate with
-            an opponent in adding coins (X or O) into a 6x7 grid. The goal of
-            the game is to align 4 of your coins, either horizontally,
-            vertically or diagonally.
+        <p>
+          Welcome to Quizzless, please create a user or log in to use the service.
           </p>
-          <p>
-            You can play either against an AI, or against other players online.
-            However, to play online, you need to create an account and be logged
-            in.
-          </p>
-        </div>
-
-        <div>
-          AI Match
-          Online Match
-            <div>Online Match</div>
-        </div>
       </div>
     );
   }
