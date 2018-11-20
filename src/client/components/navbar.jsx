@@ -1,76 +1,38 @@
-import React from "react";
-import { Link, withRouter } from "react-router-dom";
+import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import userCreators from '../redux/actions/user.creators'
 
-class NavBar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.logout = this.logout.bind(this);
-  }
+import Button from '@material-ui/core/Button'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
 
-  async logout() {
-    let response
-
-    try {
-      response = await fetch('/api/auth/logout', { method: "post" })
-    } catch (err) {
-      alert("Failed to connect to server: " + err)
-      return
-    }
-
-    if (response.status !== 204) {
-      alert("Error when connecting to server: status code " + response.status)
-      return
-    }
-
-    this.props.updateLoggedInUserId(null)
-    this.props.history.push("/")
-  }
-
-  renderLoggedIn(userId) {
-    return (
-      <div className="msgDiv">
-        <h3 className="notLoggedInMsg">
-          Welcome {userId}
-          !!!
-        </h3>
-
-        <div className="btn btnPartHeader" onClick={this.logout}>
-          Logout
-        </div>
-      </div>
-    );
-  }
-
-  renderNotLoggedIn() {
-    return (
-      <div className="msgDiv">
-        <div className="notLoggedInMsg">You are not logged in</div>
-        <div className="btnPartHeader">
-          <Link className="btn" to="/login">
-            LogIn
-          </Link>
-          <Link className="btn" to="/signup">
-            SignUp
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
+class NavBar extends Component {
   render() {
     return (
-      <div className={"navBar"}>
-        <Link className="btn home" to={"/"}>
-          Home
-        </Link>
-        {
-          (userId === null || userId === undefined)
-            ? this.renderNotLoggedIn()
-            : this.renderLoggedIn()
-        }
-      </div>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" color="inherit">
+            Quizzless
+          </Typography>
+          {this.props.loggedIn && (
+            <div>
+              <Button color="secondary" onClick={this.props.logout}>Logout</Button>
+            </div>
+          )}
+        </Toolbar>
+      </AppBar>
     );
   }
 }
 
-export default withRouter(NavBar);
+const mapStateToProps = (state = {}) => {
+  return { loggedIn: state.auth ? state.auth.loggedIn : false }
+}
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ logout: userCreators.logout }, dispatch)
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NavBar));
