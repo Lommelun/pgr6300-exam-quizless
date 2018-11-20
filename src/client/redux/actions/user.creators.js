@@ -1,67 +1,94 @@
 import { userConsts } from './action.types'
 
-const login = (username, password) => {
-  return dispatch => {
-    dispatch(() => {
-      return { type: userConsts.LOGIN_REQUEST, payload: { username } }
-    });
+const login = (username, password) => dispatch => {
+  dispatch(request(username))
 
-    fetch('/api/auth/authenticate/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: username, password: password })
-    }).then(res => {
-      if (res.status === 204) {
-        return fetch(`/api/auth/users/${username}`)
-      }
+  fetch('/api/auth/authenticate/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: username, password: password })
+  }).then(res => (res.status === 204)
+    ? fetch(`/api/auth/users/${username}`)
+    : Promise.reject('Expected status code 204, could not fetch user'))
+    .then(res => res.json())
+    .then(user => dispatch(success(user)))
+    .catch(err => dispatch(fail(err)))
 
-      return Promise.reject('Expected status code 204, could not fetch user')
-    }).then(res => res.json())
-      .then(user => dispatch((user) => {
-        console.log('dispatching success', user)
+  function request(username) {
+    return { type: userConsts.LOGIN_REQUEST, payload: { username } }
+  }
 
-        return { type: userConsts.LOGIN_SUCCESS, payload: { user } }
-      }))
-      .catch(err => dispatch(() => {
-        return { type: userConsts.LOGIN_FAILURE, payload: { err } }
-      }))
+  function success(user) {
+    return { type: userConsts.LOGIN_SUCCESS, payload: { user } }
+  }
+
+  function fail(error) {
+    return { type: userConsts.LOGIN_FAILURE, payload: { error } }
   }
 }
 
-const logout = () => {
-  return dispatch => {
-    dispatch(() => { return { type: userConsts.LOGOUT_REQUEST } })
+const logout = () => dispatch => {
+  dispatch(request())
 
-    fetch('/api/register/', { method: 'POST' })
-      .then(res => {
-        dispatch(() => { return { type: userConsts.LOGOUT_SUCCESS } })
-      })
-      .catch(err => {
-        dispatch(() => { return { type: userConsts.LOGOUT_FAILURE } })
-      })
-  }
+  fetch('/api/register/', { method: 'POST' })
+    .then(res => res.json())
+    .then(user => dispatch(success(user)))
+    .catch(err => dispatch(fail(err)))
+
+  function request() { return { type: userConsts.LOGOUT_REQUEST } }
+  function success() { return { type: userConsts.LOGOUT_SUCCESS } }
+  function fail() { return { type: userConsts.LOGOUT_FAILURE } }
 }
 
-const register = (username, password) => {
-  return dispatch => {
-    dispatch(() => {
-      return {
-        type: userConsts.REGISTER_REQUEST, user: { username: username, password: password }
-      }
-    })
+const register = (username, password) => dispatch => {
+  dispatch(request(username, password))
 
-    fetch('/api/register/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: username, password: password })
-    })
-      .then(JSON.parse)
-      .then(user => {
-        dispatch(() => { return { type: userConsts.REGISTER_SUCCESS, user } })
-      })
-      .catch(err => {
-        dispatch(() => { return { type: userConsts.REGISTER_FAILURE, err } })
-      })
+  fetch('/api/register/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: username, password: password })
+  })
+    .then(res => (res.status === 204)
+      ? fetch(`/api/auth/users/${username}`)
+      : Promise.reject('Expected status code 204, could not fetch user'))
+    .then(res => res.json())
+    .then(user => dispatch(success(user)))
+    .catch(err => dispatch(fail(err)))
+
+  function request(username, password) {
+    return {
+      type: userConsts.REGISTER_REQUEST, user: { username: username, password: password }
+    }
+  }
+
+  function success(user) {
+    return () => Promise.all([
+      dispatch(authSuccess(user)),
+      dispatch(registerSuccess(user))
+    ])
+  }
+
+  function fail(error) {
+    return () => Promise.all([
+      dispatch(registerFail(error)),
+      dispatch(authFail(error))
+    ])
+  }
+
+  function registerSuccess(user) {
+    return { type: userConsts.REGISTER_SUCCESS, payload: { username: user.username } }
+  }
+
+  function registerFail(error) {
+    return { type: userConsts.REGISTER_FAILURE, payload: { error } }
+  }
+
+  function authSuccess(user) {
+    return { type: userConsts.LOGIN_SUCCESS, payload: { user } }
+  }
+
+  function authFail(error) {
+    return { type: userConsts.LOGIN_FAILURE, payload: { error } }
   }
 }
 

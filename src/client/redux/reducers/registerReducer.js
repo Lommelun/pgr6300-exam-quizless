@@ -1,6 +1,6 @@
 import { userConsts } from '../actions/action.types'
 
-export default function (state = {}, action) {
+export function register(state = {}, action) {
   switch (action.type) {
     case userConsts.REGISTER_REQUEST:
       return {
