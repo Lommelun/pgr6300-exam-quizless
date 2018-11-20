@@ -31,14 +31,13 @@ const login = (username, password) => dispatch => {
 const logout = () => dispatch => {
   dispatch(request())
 
-  fetch('/api/register/', { method: 'POST' })
-    .then(res => res.json())
-    .then(user => dispatch(success(user)))
+  fetch('/api/auth/logout/', { method: 'POST' })
+    .then(() => dispatch(success()))
     .catch(err => dispatch(fail(err)))
 
   function request() { return { type: userConsts.LOGOUT_REQUEST } }
   function success() { return { type: userConsts.LOGOUT_SUCCESS } }
-  function fail() { return { type: userConsts.LOGOUT_FAILURE } }
+  function fail(error) { return { type: userConsts.LOGOUT_FAILURE, payload: { error } } }
 }
 
 const register = (username, password) => dispatch => {

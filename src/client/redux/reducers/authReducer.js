@@ -13,8 +13,11 @@ export function auth(state = {}, action) {
         user: { username: action.payload.username, id: action.payload.id }
       }
     case userConsts.LOGIN_FAILURE: return state
-    case userConsts.LOGOUT_REQUEST: return state
-    case userConsts.LOGOUT_SUCCESS: return state
+    case userConsts.LOGOUT_REQUEST: return {
+      ...state,
+      loggingOut: true
+    }
+    case userConsts.LOGOUT_SUCCESS: return {}
     case userConsts.LOGOUT_FAILURE: return state
     default: return state
   }
