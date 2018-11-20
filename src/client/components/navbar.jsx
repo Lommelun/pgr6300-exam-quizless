@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import userCreators from '../redux/actions/user.creators'
@@ -17,13 +17,16 @@ class NavBar extends Component {
           <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>
             Quizzless
           </Typography>
-          {this.props.loggedIn && (
-            <div>
-              <Button color="default" onClick={this.props.logout}>
-                Logout
-              </Button>
-            </div>
-          )}
+          {this.props.loggedIn
+            ?
+            <Button variant="outlined" color="secondary" onClick={this.props.logout}>
+              Logout
+            </Button>
+            :
+            <Link to="/login" style={{ textDecoration: 'none' }}>
+              <Button variant="contained" color="secondary">Login</Button>
+            </Link>
+          }
         </Toolbar>
       </AppBar>
     );
