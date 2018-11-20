@@ -50,7 +50,7 @@ const register = (username, password) => dispatch => {
   })
     .then(res => (res.status === 204)
       ? fetch(`/api/auth/users/${username}`)
-      : Promise.reject(`Could not authenticate user: ${username}`))
+      : Promise.reject(`Could not register new user: ${username}`))
     .then(res => res.json())
     .then(user => dispatch(success(user)))
     .catch(err => dispatch(fail(err)))
