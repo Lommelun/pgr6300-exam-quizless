@@ -12,14 +12,16 @@ import Typography from '@material-ui/core/Typography'
 class NavBar extends Component {
   render() {
     return (
-      <AppBar position="static">
+      <AppBar position="static" style={{ flexGrow: 1 }}>
         <Toolbar>
-          <Typography variant="h6" color="inherit">
+          <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>
             Quizzless
           </Typography>
           {this.props.loggedIn && (
             <div>
-              <Button color="secondary" onClick={this.props.logout}>Logout</Button>
+              <Button color="default" onClick={this.props.logout}>
+                Logout
+              </Button>
             </div>
           )}
         </Toolbar>
