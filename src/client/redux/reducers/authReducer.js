@@ -12,7 +12,7 @@ export function auth(state = {}, action) {
         loggedIn: true,
         user: { username: action.payload.username, id: action.payload.id }
       }
-    case userConsts.LOGIN_FAILURE: return state
+    case userConsts.LOGIN_FAILURE: return {}
     case userConsts.LOGOUT_REQUEST: return {
       ...state,
       loggingOut: true
