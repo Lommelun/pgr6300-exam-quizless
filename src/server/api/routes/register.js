@@ -4,9 +4,7 @@ const passport = require('passport')
 
 router.post('/', (req, res) => {
   const user = new User({ username: req.body.username, password: req.body.password })
-  console.log(req.body)
-  console.log()
-  console.log(user)
+
   user.save(err => {
     if (err) {
       res.status(400).send({ messages: generateErrorMessages(err) })
@@ -16,8 +14,7 @@ router.post('/', (req, res) => {
     passport.authenticate('local')(req, res, () => {
       req.session.save(() => {
         if (err) return next(err)
-
-        res.status(204).send(JSON.stringify(user))
+        res.status(204).send()
       })
     })
   })
