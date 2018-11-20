@@ -7,9 +7,10 @@ const login = (username, password) => dispatch => {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username: username, password: password })
-  }).then(res => (res.status === 204)
-    ? fetch(`/api/auth/users/${username}`)
-    : Promise.reject('Expected status code 204, could not fetch user'))
+  })
+    .then(async res => (res.status === 204)
+      ? fetch(`/api/auth/users/${username}`)
+      : Promise.reject(`Could not authenticate user: ${username}`))
     .then(res => res.json())
     .then(user => dispatch(success(user)))
     .catch(err => dispatch(fail(err)))
@@ -50,7 +51,7 @@ const register = (username, password) => dispatch => {
   })
     .then(res => (res.status === 204)
       ? fetch(`/api/auth/users/${username}`)
-      : Promise.reject('Expected status code 204, could not fetch user'))
+      : Promise.reject(`Could not authenticate user: ${username}`))
     .then(res => res.json())
     .then(user => dispatch(success(user)))
     .catch(err => dispatch(fail(err)))
