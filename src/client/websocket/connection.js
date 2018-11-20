@@ -5,10 +5,10 @@ const socket = io()
 
 export const init = (store) => {
   const types = [
-    ...alertConsts,
-    ...gameConsts,
-    ...roomConsts,
-    ...userConsts
+    ...Object.values(alertConsts),
+    ...Object.values(gameConsts),
+    ...Object.values(roomConsts),
+    ...Object.values(userConsts)
   ]
 
   types.forEach(type => socket.on(type, (payload) => {
