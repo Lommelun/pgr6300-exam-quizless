@@ -26,10 +26,10 @@ app.use([
   passport.initialize(), passport.session()
 ])
 
+app.use('/api', require('./api/router'))
+
 app.use((req, res, next) => {
   res.sendFile(path.resolve(__dirname, '../../public/index.html'));
 });
-
-app.use('/api', require('./api/router'))
 
 module.exports = { sessionMiddleware, app }

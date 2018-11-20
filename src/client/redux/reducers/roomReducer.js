@@ -1,6 +1,6 @@
 import { roomConsts } from '../actions/action.types'
 
-export default (state = [], action) => {
+export function room(state = [], action) {
   switch (action.type) {
     case roomConsts.CONNECT: return state;
     case roomConsts.DISCONNECT: return state;
