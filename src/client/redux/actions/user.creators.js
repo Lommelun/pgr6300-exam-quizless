@@ -1,6 +1,6 @@
 import { userConsts } from './action.types'
 
-function login(username, password) {
+const login = (username, password) => {
   return dispatch => {
     dispatch(() => {
       return { type: userConsts.LOGIN_REQUEST, payload: { username } }
@@ -17,8 +17,10 @@ function login(username, password) {
 
       return Promise.reject('Expected status code 204, could not fetch user')
     }).then(res => res.json())
-      .then(user => dispatch(() => {
-        return { type: userConsts.LOGIN_SUCCESS, payload: user }
+      .then(user => dispatch((user) => {
+        console.log('dispatching success', user)
+
+        return { type: userConsts.LOGIN_SUCCESS, payload: { user } }
       }))
       .catch(err => dispatch(() => {
         return { type: userConsts.LOGIN_FAILURE, payload: { err } }
@@ -26,7 +28,7 @@ function login(username, password) {
   }
 }
 
-function logout() {
+const logout = () => {
   return dispatch => {
     dispatch(() => { return { type: userConsts.LOGOUT_REQUEST } })
 
@@ -40,7 +42,7 @@ function logout() {
   }
 }
 
-function register(username, password) {
+const register = (username, password) => {
   return dispatch => {
     dispatch(() => {
       return {
@@ -63,10 +65,8 @@ function register(username, password) {
   }
 }
 
-const userActions = {
+export default {
   login,
   logout,
   register
 }
-
-export default userActions

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import userCreators from '../actions/user.creators'
+import userCreators from '../redux/actions/user.creators'
 
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'

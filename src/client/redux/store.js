@@ -1,12 +1,20 @@
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, combineReducers } from 'redux'
 import ReduxThunk from 'redux-thunk'
-import rootReducer from '../reducers/root'
-import { emit } from '../websocket/connection'
 import logger from 'redux-logger'
+import { emit } from '../websocket/connection'
+import authReducer from './reducers/authReducer'
+import registerReducer from './reducers/registerReducer'
+import roomReducer from './reducers/roomReducer'
 
 const middlewares = [
-  ReduxThunk.withExtraArgument(emit),
-  logger
+  logger,
+  ReduxThunk.withExtraArgument(emit)
 ]
 
-export default createStore(rootReducer, {}, applyMiddleware(...middlewares))
+const reducers = combineReducers({
+  authReducer,
+  registerReducer,
+  roomReducer
+})
+
+export default createStore(reducers, applyMiddleware(...middlewares))
