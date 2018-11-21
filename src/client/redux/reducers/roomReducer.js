@@ -28,13 +28,9 @@ export function room(state = [], action) {
         rooms: action.payload.rooms
       }
     case roomConsts.USER_CONNECTED:
-      return {
-        rooms: action.payload.rooms
-      }
+      return state
     case roomConsts.USER_DISCONNECTED:
-      return {
-        rooms: action.payload.rooms
-      }
+      return state
     default: return state;
   }
 }

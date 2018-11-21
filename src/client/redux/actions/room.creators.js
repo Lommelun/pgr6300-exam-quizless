@@ -29,7 +29,7 @@ const remove = room => (dispatch, getState, emit) => {
 
 const join = room => (dispatch, getSate, emit) => {
   dispatch(connect(room))
-  emit(roomConsts.REMOVE, room)
+  emit(roomConsts.CONNECT, room)
 
   function connect(id) {
     return { type: roomConsts.CONNECT, payload: { id } }

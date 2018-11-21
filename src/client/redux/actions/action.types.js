@@ -32,8 +32,8 @@ export const gameConsts = {
 }
 
 export const roomConsts = {
-  GET_ALL: 'wso/GET_ALL',
-  GOT_ALL: 'ws/GOT_ALL',
+  GET_ALL: 'wso/ROOM_GET_ALL',
+  GOT_ALL: 'ws/ROOM_GOT_ALL',
 
   CREATE: 'wso/ROOM_CREATE',
   REMOVE: 'wso/ROOM_DELETE',
