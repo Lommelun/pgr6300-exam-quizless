@@ -49,13 +49,13 @@ class Login extends Component {
 
   componentDidUpdate() {
     if (this.props.loggedIn) {
-      this.props.history.push('/')
+      this.props.history.push('/lobby')
     }
   }
 
   componentDidMount() {
     if (this.props.loggedIn) {
-      this.props.history.push('/')
+      this.props.history.push('/lobby')
     }
   }
 

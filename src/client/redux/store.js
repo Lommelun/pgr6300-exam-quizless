@@ -5,16 +5,18 @@ import { emit } from '../websocket/connection'
 import { auth } from './reducers/authReducer'
 import { register } from './reducers/registerReducer'
 import { room } from './reducers/roomReducer'
+import { game } from './reducers/gameReducer'
 
 const middlewares = [
-  thunk,
+  thunk.withExtraArgument(emit),
   logger
 ]
 
 const reducers = combineReducers({
   auth,
   register,
-  room
+  room,
+  game
 })
 
 export default createStore(reducers, applyMiddleware(...middlewares))
