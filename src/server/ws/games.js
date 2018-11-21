@@ -1,13 +1,31 @@
-const games = []
+class ActiveGames {
+  constructor() {
+    this.games = []
+  }
 
-const get = id => games.find(game => game.id === id)
+  get(id) {
+    return this.games.find(game => game.id === id)
+  }
 
-const add = game => games.push(game)
+  add(game) {
+    this.games.push(game)
+  }
 
-const getAll = () => games
+  leave(id, user) {
+    this.games.forEach(game => {
+      if (game.id !== id) return
+      game.removeUser(user)
+      if (game.users.length === 0) this.remove(game.id)
+    })
+  }
 
-module.exports = {
-  get,
-  getAll,
-  add
+  getAll() {
+    return this.rooms
+  }
+
+  remove(roomId) {
+    this.rooms = this.rooms.filter(room => room.id !== roomId)
+  }
 }
+
+module.exports = ActiveGames

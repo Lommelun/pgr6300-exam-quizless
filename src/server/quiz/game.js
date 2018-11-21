@@ -17,6 +17,11 @@ class Game {
     this.currentQuestion = this.quiz.questions.splice(Math.random() * this.quiz.questions.length, 1)
   }
 
+  removeUser(id) {
+    this.users = this.users.filter(user => user.id !== id)
+      .map(user => { return { id: user.id, score: 0, answered: false } })
+  }
+
   nextQuestion() {
     if (this.users.filter(user => !user.answered).length === 0) return false
 

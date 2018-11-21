@@ -1,34 +1,38 @@
-let rooms = []
+class ActiveRooms {
+  constructor() {
+    this.rooms = []
+  }
 
-const get = id => rooms.find(room => room.id === id)
+  get(id) {
+    return this.rooms.find(room => room.id === id)
+  }
 
-const add = room => rooms.push(room)
+  add(room) {
+    this.rooms.push(room)
+  }
 
-const join = (id, user) => {
-  rooms.forEach(room => {
-    if (room.id !== id) return
-    room.users.push(user)
-  })
+  join(roomId, user) {
+    this.rooms.forEach(room => {
+      if (room.id !== roomId) return
+      room.addUser(user)
+    })
+  }
+
+  leave(roomId, user) {
+    this.rooms.forEach(room => {
+      if (room.id !== roomId) return
+      room.removeUser(user)
+      if (room.users.length === 0) this.remove(room.id)
+    })
+  }
+
+  getAll() {
+    return this.rooms
+  }
+
+  remove(roomId) {
+    this.rooms = this.rooms.filter(room => room.id !== roomId)
+  }
 }
 
-const leave = (id, user) => {
-  rooms.forEach(room => {
-    if (room.id !== id) return
-    room.users = room.users.filter(uid => user !== uid)
-  })
-}
-
-const getAll = () => rooms
-
-const remove = id => {
-  this.rooms = rooms.filter(room => room.id !== id)
-}
-
-module.exports = {
-  get,
-  getAll,
-  add,
-  remove,
-  join,
-  leave
-}
+module.exports = ActiveRooms
