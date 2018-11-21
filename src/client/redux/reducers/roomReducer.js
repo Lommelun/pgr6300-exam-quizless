@@ -2,6 +2,11 @@ import { roomConsts } from '../actions/action.types'
 
 export function room(state = [], action) {
   switch (action.type) {
+    case roomConsts.GET_ALL: return state
+    case roomConsts.GOT_ALL:
+      return {
+        rooms: action.payload.rooms
+      }
     case roomConsts.CONNECT:
       return {
         ...state.rooms,

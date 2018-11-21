@@ -16,13 +16,12 @@ class Game extends Component {
   render() {
     return (
       <div>
-        <h2>{this.props.question}</h2>
         <ul>
-          {this.props.rooms.map(room => (
-            <li>
-              <Button color="primary" onClick={() => console.log('hello there', room.id)}>{question}</Button>
+          {this.props.rooms.map((room, index) =>
+            <li key={room.id}>
+              <Button color="primary" onClick={this.props.joinRoom(room)}>Room {index + 1}</Button>
             </li>
-          ))}
+          )}
         </ul>
       </div>
     );
