@@ -1,4 +1,7 @@
 const gameConsts = {
+  CREATE: 'ws/GAME_CREATE',
+  CREATED: 'ws/GAME_CREATED',
+
   WIN: 'ws/GAME_WIN',
   LOSS: 'ws/GAME_LOSS',
 
