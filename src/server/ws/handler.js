@@ -1,10 +1,9 @@
-const session = require('../app').session
+const session = require('../app').sessionMiddleware
 const socketIo = require('socket.io')
-const crypto = require("crypto")
 const Game = require('../quiz/game')
 const Room = require('./room')
-const gameC = require('./ws.consts').gameConsts
-const roomC = require('./ws.consts').roomConsts
+const GameConstant = require('./ws.consts').gameConsts
+const RoomConstant = require('./ws.consts').roomConsts
 const ActiveRooms = require('./rooms')
 const ActiveGames = require('./games')
 
@@ -15,59 +14,59 @@ const rooms = new ActiveRooms()
 const start = (server) => {
   io = socketIo(server)
 
+  io.use(function (socket, next) {
+    session(socket.request, {}, next)
+  })
+
+  io.use((socket, next) => {
+    if (socket.request.session.passport) return next()
+    next(new Error("Not authenticated"))
+  })
+
   io.on('connection', socket => {
-    console.log(`Connected to ${socket.id}`)
+    console.log(`Connected to ${socket.id}, user: ${socket.request.session.passport.user}`)
 
-    if (rooms.getAll().length === 0) {
-      const _room = new Room(socket.id)
-
-      rooms.add(_room)
-      console.log(`Created room on: ${socket.id}, \nroom :: ${_room.id}`)
-
-      socket.emit(roomC.CREATED, { rooms: rooms.getAll() })
-    }
-
-    socket.on(roomC.GET_ALL, () => {
-      socket.emit(roomC.GOT_ALL, { rooms: rooms.getAll() })
+    socket.on(RoomConstant.GET_ALL, () => {
+      socket.emit(RoomConstant.GOT_ALL, { rooms: rooms.getAll() })
     })
 
-    socket.on(roomC.CREATE, () => {
-      console.log(`Create room on: ${socket.id}`)
-      const _room = new Room(socket.id)
+    socket.on(RoomConstant.CREATE, () => {
+      console.log(`Create room for: ${socket.request.session.passport.user}`)
+      const _room = new Room(socket.request.session.passport.user)
 
       rooms.add(_room)
-      console.log(`Created room on: ${socket.id}, \nroom :: ${_room.id}`)
+      console.log(`Created room for: ${socket.request.session.passport.user}, \nroom :: ${_room.id}`)
 
-      socket.emit(roomC.CREATED, { rooms: rooms.getAll() })
+      socket.emit(RoomConstant.CREATED, { rooms: rooms.getAll() })
     })
 
-    socket.on(roomC.REMOVE, roomId => {
+    socket.on(RoomConstant.REMOVE, roomId => {
       const _room = rooms.get(roomId)
-      if (socket.id !== (_room ? _room.owner : false)) return
+      if (socket.request.session.passport.user !== (_room ? _room.owner : false)) return
 
       rooms.remove(roomId)
-      console.log(`Removed room on: ${socket.id}, \nroom :: ${roomId}`)
+      console.log(`Removed room for: ${socket.request.session.passport.user}, \nroom :: ${roomId}`)
 
-      socket.emit(roomC.REMOVED, { rooms: rooms.getAll() })
+      socket.emit(RoomConstant.REMOVED, { rooms: rooms.getAll() })
     })
 
-    socket.on(roomC.CONNECTED, roomId => {
-      console.log(`${socket.id} connected to room  ${roomId}`)
+    socket.on(RoomConstant.CONNECT, roomId => {
+      console.log(`${socket.request.session.passport.user} connected to room  ${roomId}`)
 
-      rooms.join(roomId, socket.id)
-      console.log(`${socket.id} joined room  ${roomId}`)
+      rooms.join(roomId, socket.request.session.passport.user)
+      console.log(`${socket.request.session.passport.user} joined room  ${roomId}`)
 
-      socket.to(roomId).emit(roomC.USER_CONNECTED, { room: rooms.getAll() })
+      socket.to(roomId).emit(RoomConstant.USER_CONNECTED, { room: rooms.getAll() })
     })
 
-    socket.on(roomC.DISCONNECTED, roomId => {
-      rooms.leave(roomId, socket.id)
-      console.log(`${socket.id} left room ${roomId}`)
+    socket.on(RoomConstant.DISCONNECT, roomId => {
+      rooms.leave(roomId, socket.request.session.passport.user)
+      console.log(`${socket.request.session.passport.user} left room ${roomId}`)
 
-      socket.to(roomId).emit(roomC.USER_DISCONNECTED, { room: rooms.getAll() })
+      socket.to(roomId).emit(RoomConstant.USER_DISCONNECTED, { room: rooms.getAll() })
     })
 
-    socket.on(gameC.CREATE, async roomId => {
+    socket.on(GameConstant.CREATE, async roomId => {
       console.log(`Creating game for room ${roomId}, owner: ${rooms.get(roomId).owner}`)
       const _game = new Game(rooms.get(roomId).getUsers(), roomId)
       games.add(_game)
@@ -77,29 +76,29 @@ const start = (server) => {
       await _game.start()
       console.log(`Game with id ${_game.id} started`)
 
-      socket.to(roomId).emit(gameC.CREATED, _game)
+      socket.to(roomId).emit(GameConstant.CREATED, _game)
     })
 
-    socket.on(gameC.VERIFY_ANSWER_REQUEST, (answer, roomId) => {
+    socket.on(GameConstant.VERIFY_ANSWER_REQUEST, (answer, roomId) => {
       const _game = games.get(roomId)
       console.log(`Verifying answer ${answer} for ${_game.id}`)
 
-      if (_game.verifyAnswer(answer, socket.id)) {
-        socket.emit(gameC.ANSWER_CORRECT)
+      if (_game.verifyAnswer(answer, socket.request.session.passport.user)) {
+        socket.emit(GameConstant.ANSWER_CORRECT)
       } else {
-        socket.emit(gameC.ANSWER_WRONG)
+        socket.emit(GameConstant.ANSWER_WRONG)
       }
 
       console.log(`Checking if everyone answered in ${_game.id}`)
       if (_game.nextQuestion()) {
         console.log(`Dispatching next question for ${_game.id}`)
-        socket.to(roomId).emit(gameC.NEXT_QUESTION, _game.getCurrentQuestion())
+        socket.to(roomId).emit(GameConstant.NEXT_QUESTION, _game.getCurrentQuestion())
       }
     })
 
     socket.on('disconnect', () => {
       console.log(`Disconnected from ${socket.id}`)
-      rooms.leave(socket.id)
+      rooms.leave(socket.request.session.passport.user)
     })
   })
 }
