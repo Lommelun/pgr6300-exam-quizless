@@ -8,7 +8,7 @@ import { room } from './reducers/roomReducer'
 import { game } from './reducers/gameReducer'
 
 const middlewares = [
-  thunk.withExtraArgument({ emit }),
+  thunk.withExtraArgument(emit),
   logger
 ]
 

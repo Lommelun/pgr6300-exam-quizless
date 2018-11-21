@@ -13,8 +13,11 @@ const gameConsts = {
 }
 
 const roomConsts = {
-  CREATE: 'ws/ROOM_CREATE',
-  REMOVE: 'ws/ROOM_DELETE',
+  GET_ALL: 'wso/GET_ALL',
+  GOT_ALL: 'wso/GOT_ALL',
+
+  CREATE: 'wso/ROOM_CREATE',
+  REMOVE: 'wso/ROOM_DELETE',
 
   CREATED: 'ws/ROOM_CREATED',
   REMOVED: 'ws/ROOM_REMOVED',
@@ -25,8 +28,8 @@ const roomConsts = {
   CONNECTED: 'ws/ROOM_CONNECTED',
   DISCONNECTED: 'ws/ROOM_DISCONNECTED',
 
-  CONNECT: 'ws/ROOM_CONNECT',
-  DISCONNECT: 'ws/ROOM_DISCONNECT'
+  CONNECT: 'wso/ROOM_CONNECT',
+  DISCONNECT: 'wso/ROOM_DISCONNECT'
 }
 
 module.exports = { roomConsts, gameConsts }

@@ -9,6 +9,15 @@ const create = () => (dispatch, getState, emit) => {
   }
 }
 
+const get = () => (dispatch, getState, emit) => {
+  dispatch(get())
+  emit(roomConsts.GET_ALL)
+
+  function get() {
+    return { type: roomConsts.GET_ALL }
+  }
+}
+
 const remove = room => (dispatch, getState, emit) => {
   dispatch(remove(room))
   emit(roomConsts.REMOVE, room)
@@ -40,5 +49,6 @@ export default {
   create,
   remove,
   join,
-  leave
+  leave,
+  get
 }
