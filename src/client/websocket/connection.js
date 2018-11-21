@@ -8,10 +8,10 @@ const wstypes = [
   ...Object.values(gameConsts),
   ...Object.values(roomConsts),
   ...Object.values(userConsts)
-].filter(type => type.startsWith('ws/'))
+].filter(type => type.startsWith('wso/'))
 
 export const init = store => {
   wstypes.forEach(type => socket.on(type, payload => store.dispatch({ type, payload })))
 }
 
-export const emit = (type, payload) => socket.emit(type, payload);
+export const emit = (type, payload = {}) => socket.emit(type, payload);
