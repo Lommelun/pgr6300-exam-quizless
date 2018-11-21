@@ -14,7 +14,7 @@ const gameConsts = {
 
 const roomConsts = {
   GET_ALL: 'wso/GET_ALL',
-  GOT_ALL: 'wso/GOT_ALL',
+  GOT_ALL: 'ws/GOT_ALL',
 
   CREATE: 'wso/ROOM_CREATE',
   REMOVE: 'wso/ROOM_DELETE',
