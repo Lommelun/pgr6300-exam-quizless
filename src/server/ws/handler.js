@@ -14,9 +14,7 @@ const start = (server) => {
   io.on('connection', socket => {
     console.log(`Connected to ${socket.id}`)
 
-    socket.on(roomC.CREATE, () => {
-      console.log(`Create room on: ${socket.id}`)
-
+    if (rooms.getAll().length === 0) {
       const room = {
         owner: socket.client.id,
         id: crypto.randomBytes(16).toString('hex'),
@@ -24,7 +22,27 @@ const start = (server) => {
       }
 
       rooms.add(room)
-      console.log(`Created room on: ${socket.id}, \nroom :: ${room}`)
+      console.log(`Created room on: ${socket.id}, \nroom :: ${room.id}`)
+
+      socket.emit(roomC.CREATED, { rooms: rooms.getAll() })
+    }
+
+    socket.on(roomC.GET_ALL, () => {
+      socket.emit(roomC.GOT_ALL, { rooms: rooms.getAll() })
+    })
+
+    socket.on(roomC.CREATE, () => {
+      console.log(`Create room on: ${socket.id}`)
+
+      const id = crypto.randomBytes(16).toString('hex')
+      const room = {
+        owner: socket.id,
+        id: id,
+        users: [socket.id]
+      }
+
+      rooms.add(room)
+      console.log(`Created room on: ${socket.id}, \nroom :: ${room.id}`)
 
       socket.emit(roomC.CREATED, { rooms: rooms.getAll() })
     })

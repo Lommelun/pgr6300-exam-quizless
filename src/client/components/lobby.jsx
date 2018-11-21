@@ -2,13 +2,15 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import gameCreators from '../redux/actions/game.creators'
+import roomCreators from '../redux/actions/room.creators'
 
 import Button from '@material-ui/core/Button'
 
 class Game extends Component {
   constructor(props) {
     super(props)
+
+    this.props.getRooms()
   }
 
   render() {
@@ -37,7 +39,11 @@ const mapStateToProps = (state = {}) => {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({
-    create: gameCreators.create
+    createRoom: roomCreators.create,
+    removeRoom: roomCreators.remove,
+    joinRoom: roomCreators.join,
+    leaveRoom: roomCreators.leave,
+    getRooms: roomCreators.get
   }, dispatch)
 }
 
